@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "users")
@@ -31,15 +33,20 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Transient
+    String roleName;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Collection<Role> roles = new HashSet<>();
 
     public String rolesToString() {
-        return roles.stream().map(String::valueOf)
-                .collect(Collectors.joining(",", "{", "}"));
+        return roles.stream()
+                .map(String::valueOf)
+                .map(x -> x.substring(5))
+                .collect(Collectors.joining(", ", "{", "}"));
     }
 
     public User() {
@@ -121,6 +128,14 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public void addRole(Role role) {

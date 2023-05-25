@@ -8,12 +8,12 @@
 <body>
 
 <form th:method="POST" th:action="@{/}" th:object="${user}">
-    <label for="name">Enter username:</label>
+    <label for="username">Enter username:</label>
     <input type="text" th:field="*{username}" id="username">
 
     <br/>
 
-    <label for="name">Enter password:</label>
+    <label for="password">Enter password:</label>
     <input type="text" th:field="*{password}" id="password">
 
     <br/>
@@ -25,6 +25,15 @@
 
     <label for="lastName">Enter last name:</label>
     <input type="text" th:field="*{lastName}" id="lastName">
+
+    <br/>
+    <br/>
+
+    <label>Choose role:</label>
+    <select th:field="*{roleName}">
+        <option th:value="'ROLE_USER'" th:text="User"></option>
+        <option th:value="'ROLE_ADMIN'" th:text="Admin"></option>
+    </select>
 
     <br/>
 

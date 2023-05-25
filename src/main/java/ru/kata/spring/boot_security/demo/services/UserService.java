@@ -13,21 +13,21 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
 
     UserRepository userRepository;
+
     RoleRepository roleRepository;
 
+
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public void setUserAndRoleRepository(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public User findByUsername(String username) {
@@ -48,9 +48,12 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void saveUser(User user) {
-        ArrayList<Role> userRole = new ArrayList<>();
-        userRole.add(new Role(1L, "ROLE_USER"));
-        user.setRoles(userRole);
+        if (user.getRoleName().equals("ROLE_ADMIN")) {
+            user.addRole(roleRepository.findByName(user.getRoleName()));
+            user.addRole(roleRepository.findByName("ROLE_USER"));
+        } else {
+            user.addRole(roleRepository.findByName(user.getRoleName()));
+        }
         userRepository.save(user);
     }
 
