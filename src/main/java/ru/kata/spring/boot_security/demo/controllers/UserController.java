@@ -20,7 +20,14 @@ private final UserService userService;
     public String showUser(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "showForUser";
+        return "userForAdmin";
+    }
+
+    @GetMapping("/userpage")
+    public String showForUser(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
+        return "user";
     }
 
 }

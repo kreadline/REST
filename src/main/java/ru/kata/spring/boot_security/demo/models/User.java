@@ -33,6 +33,9 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "age")
+    private Integer age;
+
     @Transient
     String roleName;
 
@@ -45,8 +48,7 @@ public class User implements UserDetails {
     public String rolesToString() {
         return roles.stream()
                 .map(String::valueOf)
-                .map(x -> x.substring(5))
-                .collect(Collectors.joining(", ", "{", "}"));
+                .collect(Collectors.joining(" "));
     }
 
     public User() {
@@ -55,6 +57,14 @@ public class User implements UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public Long getId() {
