@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -21,11 +23,10 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String allUsers(Model model) {
+    public String allUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("allRoles", userService.findAllRoles());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("user1", user);
         return "admin";
     }

@@ -2,9 +2,9 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.models.Role;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,7 +15,8 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> findAll() {
-        return entityManager.createQuery("from Role", Role.class).getResultList();
+        TypedQuery<Role> query = entityManager.createQuery("select r from Role r", Role.class);
+        return query.getResultList();
     }
 
     public Role findRoleByAuthority(String authority) throws NoSuchElementException {

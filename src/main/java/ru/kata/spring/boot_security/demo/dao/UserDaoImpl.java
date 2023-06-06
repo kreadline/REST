@@ -5,11 +5,13 @@ import ru.kata.spring.boot_security.demo.models.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 
 @Repository
 public class UserDaoImpl implements UserDao {
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -38,15 +40,13 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void removeUserById(Long id) {
         entityManager.remove(entityManager.find(User.class, id));
-
     }
 
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        return entityManager.createQuery(
-                "select u from User u").getResultList();
+        TypedQuery<User> query = entityManager.createQuery("select u from User u", User.class);
+        return query.getResultList();
     }
 
 
