@@ -1,25 +1,21 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.models.User;
 
-
-
-@Controller
-@RequestMapping("/user")
-public class UserController {
+@RestController
+@RequestMapping("/active")
+public class UserRestController {
 
     @GetMapping()
-    public String showUserInfo(Model model) {
+    public ResponseEntity<User> showUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        model.addAttribute("user", user);
-        return "user";
+        return ResponseEntity.ok(user);
     }
 }

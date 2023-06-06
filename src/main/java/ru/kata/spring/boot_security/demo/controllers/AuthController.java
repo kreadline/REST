@@ -1,14 +1,14 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class LoginController {
+@RequestMapping(name = "/")
+public class AuthController {
 
-    @RequestMapping(name = "/login")
-    public String login() {
+    public String loginPage() {
         return "login";
     }
-
 }
